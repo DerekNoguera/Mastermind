@@ -1,4 +1,49 @@
-⭕
-🟠 
-⚪️
-🟢
+# ⭕
+# # 🟠 
+# # ⚪️cls
+# # 🟢
+# def jugar(self):
+#     while True:
+#         eleccion = EscogerJugador()
+#         if eleccion == 'Exit':
+#             print("Has salido del juego.")
+#             break
+#         elif eleccion == '1':
+#             print(f'\n{green}Elegiste ser el creador{reset}')
+#             self.codigo_de_juego = self.computadora.crear_codigo()
+#             print("Código de juego creado:", self.codigo_de_juego)
+#             x = 3
+#             for  in range(x):
+#                 print(f"Iniciando partida en {x}")
+#                 time.sleep(1)
+#                 x -= 1
+
+# Computadora intenta adivinar el código
+#             while not self.computadora.adivinarPC(self.codigo_de_juego):
+#                 self.intentos += 1
+#                 if self.intentos > self.restanteintentos:
+#                     print(f"\n{red}La computadora no pudo adivinar el código. Fin del juego.{reset}")
+#                     break
+#             break
+#         elif eleccion == '2':
+#             print(f'\n{green}Elegiste ser el adivinador{reset}')
+#             time.sleep(1)
+#             self.__codigo_de_juego = self.generar_codigo()
+#             print("Generando código de juego...")
+#             time.sleep(2)
+#             print(f"La computadora ha generado un código.\n")
+#             time.sleep(1)
+#             x = 3
+#             for  in range(x):
+#                 print(f"Iniciando partida en {x}")
+#                 time.sleep(1)
+#                 x -= 1
+
+#             tablero = Tablero(self.codigo_de_juego, self.jugador)
+#             while not self.jugador.adivinar(self.codigo_de_juego, self.intentos, self.restante_intentos, tablero):
+#                 self.restante_intentos -= 1
+#                 self.intentos += 1
+#                 tablero.mostrar_tablero()
+#             break
+#         else:
+#             print(f"{red}Opción inválida. Elige 1 o 2 o 'Esc' para salir.{reset}")
