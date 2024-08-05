@@ -2,7 +2,7 @@
 import random 
 import time
 from colored import fg, attr
-red =fg('red')
+red = fg('red')
 green = fg('green')
 blue = fg('blue')
 magenta = fg('magenta')
@@ -45,12 +45,12 @@ class Jugador:
         
         if codigo_adivinar == '/list':
             if self.comando_lista == []:
-                print(f'\n{red}No hay registro disponible{reset}\n')
-                
+                print(f'\n{red}No hay registro disponible{reset}\n')   
             else:
                 print(f'\n{green}- {reset}Tus ultimas jugadas fueron')
                 for i, jugadas in enumerate(self.comando_lista, 1):
                     print(f' {green}{i} {reset}{jugadas}')    
+            return 'list'
                                     
         else:
             codigo_adivinar_arreglado = [color.strip() for color in codigo_adivinar.split(',')]
@@ -90,19 +90,22 @@ class Tablero:
         for i in self.__tablero:
             print(i)
             print()
-    def actualizar_tablero(self, codigo_adivinar_arreglado,):
-        # actualiza el tablero para mostrar los intentos del jugador
+            
+    def actualizar_tablero(self, codigo_adivinar_arreglado,): # actualiza el tablero para mostrar los intentos del jugador
         for i in range(len(codigo_adivinar_arreglado)):
+            
             if codigo_adivinar_arreglado[i] == self.__codigo_de_juego[i]:
                 self.__tablero[self.__filas - 1][i] = f' 🟢 '
+                
             elif codigo_adivinar_arreglado[i] in self.__codigo_de_juego:
                 self.__tablero[self.__filas - 1][i] = f' 🟠 '
+                
             else:
                 self.__tablero[self.__filas - 1][i] = f' ⚪️ '
+                
         self.__filas -= 1
             
 class Game:
-# se definen 
     def __init__(self, computadora, jugador):# recibe las clases de Jugador y computadora
         self.computadora = computadora
         self.jugador = jugador 
@@ -126,8 +129,7 @@ class Game:
         return random.sample(self.computadora.lista_colores, 4)
     
         
-    def jugar(self):
-        #Valida si jugador es creador o adivinador
+    def jugar(self):#Valida si jugador es creador o adivinador
         #si se equivoca entonces el bucle vuelve a funcionar
         while True:
             eleccion = Escoger_Jugador()
