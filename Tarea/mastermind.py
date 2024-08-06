@@ -12,8 +12,8 @@ reset = attr('reset')
 colores = ['red', 'blue', 'green', 'yellow', 'white', 'black']  # lista de colores
 
 def Escoger_Jugador():
-    eleccion = input("\nElige 1 para ser el creador \nElige 2 para ser el adivinador \nEscribe 'Exit' para salir:\n")
-    return eleccion
+    return input("\nElige 1 para ser el creador \nElige 2 para ser el adivinador \nEscribe 'Exit' para salir:\n")
+
 
 class Computadora:
     def __init__(self, lista_colores):
@@ -24,10 +24,25 @@ class Computadora:
     def lista_colores(self):
         return self.__lista_colores
 
-    def generar_codigo(self):
+    def dificultad():
+        return input("Ingresa el nivel de dificultad\n1 = Facil\n2 = Medio\n3 = Dificil:\n")
+    
+    def generar_codigo(self):  
         return input("Ingresa los colores separados por comas (ejemplo: red,blue,green,yellow): ")
-
-    def enviar_adivinacion_pc(self, tablero):
+    
+    def enviar_adivinacion_pc(self, tablero,codigo_de_juego, intentos, restante_intentos):
+        
+        if self.__codigo_secreto == codigo_de_juego:
+            print(f'\n{green}Has perdido! la maquina ha adivinado el código en {intentos} intentos.{reset}')
+            print(f'La combinación de colores era {codigo_de_juego}')
+            return True
+        else:
+            print(f'\n{red}Intento incorrecto. {restante_intentos - 1} intentos restantes.{reset}')
+            print(f'Su último movimiento fue {green}{self.__codigo_secreto}{reset}\n')
+                
+            if restante_intentos <= 1:
+                print("Ganaste, la maquina no ha logrado adivinar!")
+                return True
         tablero.actualizar_tablero(self.__codigo_secreto)
 
 class Jugador:
@@ -91,10 +106,10 @@ class Tablero:
         return [[' ⚪️ '] * self.__columnas for _ in range(self.__filas)]
 
     def mostrar_tablero(self):
+        print()
         for fila in self.__tablero:
             print(" | ".join(fila))
             print()
-
     def actualizar_tablero(self, codigo_adivinado):
         self.__filas -= 1
         for i in range(len(codigo_adivinado)):
@@ -104,12 +119,13 @@ class Tablero:
                 self.__tablero[self.__filas][i] = ' 🟠 '
             else:
                 self.__tablero[self.__filas][i] = ' ⚪️ '
+        
 
 class Game:
     def __init__(self, computadora, jugador):
         self.computadora = computadora
         self.jugador = jugador 
-        self.__intentos = 0
+        self.__intentos = 1
         self.__restante_intentos = 12
         self.__codigo_de_juego = None
 
@@ -140,7 +156,7 @@ class Game:
                 print("Código de juego creado:", self.__codigo_de_juego)
                 time.sleep(2)
                 tablero = Tablero(self.__codigo_de_juego, self.jugador, self.computadora)
-                while not self.computadora.enviar_adivinacion_pc(tablero):
+                while not self.computadora.enviar_adivinacion_pc(tablero,self.__codigo_de_juego, self.__intentos, self.__restante_intentos):
                     self.__restante_intentos -= 1
                     self.__intentos += 1
                     if self.__restante_intentos <= 0:
