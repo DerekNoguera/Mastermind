@@ -58,3 +58,22 @@
 #             if codigo == codigo_de_juego:
 #                 return codigo
 #         return random.choices(self.__lista_colores, k=4)
+
+
+
+    # def dificil(self,):
+    #     if len(self.NewSecuencia) >= 1:
+    #         x = random.sample(self.lista_colores, k=4)
+    #         for i in range(len(x)):
+    #             if x[i] in self.codigoJuego[i]:
+    #                 if x[i] in self.NewSecuencia:
+    #                     print("Ya existe")
+    #                 else: 
+    #                     # self.NewSecuencia.insert(x[i])
+    #                     self.NewSecuencia[i] = x[i]
+    #     else:
+    #         for i in range(len(self.NewSecuencia)):
+    #             if self.NewSecuencia[i] == "":
+    #                 self.NewSecuencia[i] = random.choice(self.lista_colores)
+    #     print(self.NewSecuencia)
+    #     return self.NewSecuencia
