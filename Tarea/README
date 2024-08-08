@@ -2,78 +2,31 @@
 # # 🟠 
 # # ⚪️cls
 # # 🟢
-# class Computadora:
-#     def __init__(self, lista_colores):
-#         self.__lista_colores = lista_colores
-#         self.__codigo_secreto = random.choices(self.__lista_colores, k=4)
+
+#Juego Mastermind
+
+#Reglas
+# 1 El jugador debe escoger si ser adivinador o creador de el jeugo
+# 2 si es creador de el juego debera escoger la dificultad de el bot para que adivine
+# 3 si es adivinador debera escoger colores de la secuencia de colores mencionada
+# 4 Si el circulo sale en verde es pq acerto la casilla correcta
+# 5 Si el circulo sale en anaranjado es pq el color existe pero esta en la casilla incorrecta
+# 6 Si el circulo sale en blanco es pq el color no existe
 
 
-#     @property
-#     def lista_colores(self):
-#         return self.__lista_colores
+#Existe 4 clases
+#Clase Game: ejecuta todas las funciones de las otras clases y recibes las otras clases como instancias y parametros
+# la que decide si jeuga jugador como creador o adivinador o sale de el juego
 
-#     @property
-#     def dificultad(self):
-#         return self.__dificultad
+#Class tablero: tiene metodo para organizar el tablero, cambiarle los colores y recibe parametros de la class
+#Jugador y computadora para hacer validaciones tambien tiene metodos para actualizar el tablero y mostrarlo en las 
+#clases de jugador y computadora
 
-#     def generar_codigo(self):
-#         return input("Ingresa los colores separados por comas (ejemplo: red,blue,green,yellow): ")
-    
+#Class Computador: tiene metodos de enviar al tablero, 3 tipos de randoms, facil, medio y dificl para los modos de la PC
+#metodo generarCodigo, es el que va a elegir en metodo de facil, medio o dificil para saber en que tipo de dificultad
+#quiere competir el jugador
+#tiene el metodo enviar_adivinacionPc que lo que hace es enviarle todos los datos a Tablero.actualizar tablero para validar
+#victorias por parte de el bot o perdidas porparte de el bot
 
-#     def adivinar_codigo(self, tablero, codigo_de_juego, intentos, restante_intentos):
-#         if self.__dificultad == 1:
-#             # Estrategia fácil: generar combinaciones aleatorias
-#             self.__codigo_secreto = random.choices(self.__lista_colores, k=4)
-#         elif self.__dificultad == 2:
-#             # Estrategia media: adivinanza inteligente básica (por ejemplo, generar combinaciones basadas en patrones)
-#             self.__codigo_secreto = self.adivinanza_media(tablero, codigo_de_juego)
-#         elif self.__dificultad == 3:
-#             # Estrategia alta: fuerza bruta
-#             self.__codigo_secreto = self.adivinanza_fuerza_bruta(tablero, codigo_de_juego)
-
-#         if self.__codigo_secreto == codigo_de_juego:
-#             print(f'\n{green}Has perdido! la maquina ha adivinado el código en {intentos} intentos.{reset}')
-#             print(f'La combinación de colores era {codigo_de_juego}')
-#             return True
-#         else:
-#             print(f'\n{red}Intento incorrecto. {restante_intentos} intentos restantes.{reset}')
-#             print(f'Su último movimiento fue {green}{self.__codigo_secreto}{reset}\n')
-                
-#             if restante_intentos <= 1:
-#                 print("Ganaste, la maquina no ha logrado adivinar!")
-#                 return True
-#         tablero.actualizar_tablero(self.__codigo_secreto)
-#         return False
-
-#     def adivinanza_media(self, tablero, codigo_de_juego):
-#         posibles_codigos = [list(comb) for comb in itertools.product(self.__lista_colores, repeat=4)]
-#         for codigo in posibles_codigos:
-#             if codigo != self.__codigo_secreto:
-#                 return codigo
-#         return random.choices(self.__lista_colores, k=4)
-
-#     def adivinanza_fuerza_bruta(self, tablero, codigo_de_juego):
-#         posibles_codigos = [list(comb) for comb in itertools.product(self.__lista_colores, repeat=4)]
-#         for codigo in posibles_codigos:
-#             if codigo == codigo_de_juego:
-#                 return codigo
-#         return random.choices(self.__lista_colores, k=4)
-
-
-
-    # def dificil(self,):
-    #     if len(self.NewSecuencia) >= 1:
-    #         x = random.sample(self.lista_colores, k=4)
-    #         for i in range(len(x)):
-    #             if x[i] in self.codigoJuego[i]:
-    #                 if x[i] in self.NewSecuencia:
-    #                     print("Ya existe")
-    #                 else: 
-    #                     # self.NewSecuencia.insert(x[i])
-    #                     self.NewSecuencia[i] = x[i]
-    #     else:
-    #         for i in range(len(self.NewSecuencia)):
-    #             if self.NewSecuencia[i] == "":
-    #                 self.NewSecuencia[i] = random.choice(self.lista_colores)
-    #     print(self.NewSecuencia)
-    #     return self.NewSecuencia
+#class Jugador tiene metodo para enviar los datos de los colores al tablero para validarlos luego y dentro de ese metodo valida
+#los ganes o perdidas recibiendo parametros desde la classe game

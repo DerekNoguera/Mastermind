@@ -1,13 +1,13 @@
-#                                                Mastermind
+# #                                               Mastermind
 import random 
 import time
 from colored import fg, attr
 from itertools import permutations
+
 def main():
+    
     red = fg('red')
     green = fg('green')
-    blue = fg('blue')
-    magenta = fg('magenta')
     reset = attr('reset')
 
     colores = ['red', 'blue', 'green', 'yellow',"black", "white"]  # lista de colores que utilizare para todo
@@ -36,9 +36,21 @@ def main():
         def dificultad(self):
             return self.__dificultad
 
-        def generar_codigo(self):  # codigo generado por el jugador
-            x = input("Ingresa 4 colores separados por comas (ejemplo: red,blue,green,yellow): ")
-            return [color.strip() for color in x.split(',')]
+        def generar_codigo(self):
+            while True:#validaciones
+                x = input("Ingresa 4 colores separados por comas (ejemplo: red,blue,green,yellow): ").lower()
+                codigo_adivinar_arreglado = [color.strip() for color in x.split(',')]
+                if len(codigo_adivinar_arreglado) != 4:
+                    print(f'{red}Solo puedes ingresar 4 colores{reset}')
+                    continue
+                if not all(color in self.__lista_colores for color in codigo_adivinar_arreglado):
+                    print(f'{red}No puedes usar colores que no esten en la lista{reset}')
+                    continue
+                if len(codigo_adivinar_arreglado) != len(set(codigo_adivinar_arreglado)):
+                    print(f'{red}No puedes repetir colores{reset}')
+                    continue
+                return codigo_adivinar_arreglado
+
 
         def facil(self):
             return random.sample(self.__lista_colores, k=4)
@@ -79,7 +91,7 @@ def main():
                 except ValueError:
                     print("Entrada no válida. Por favor ingresa un número entero.")
 
-        def generar_codigo_secreto(self):
+        def generar_codigo_secreto(self):#hace una eleccion de el motodo de facil, medio o dificil
             if self.__dificultad == 1:
                 return self.facil()
             elif self.__dificultad == 2:
@@ -95,7 +107,7 @@ def main():
             self.tablero.actualizar_tablero(self.__codigo_secreto,)# a actualizar tablero de la class tablero se le envia el codigo creador por la maquina
             #para validarlo
             if self.__codigo_secreto == codigo_de_juego:# si el codigo es exactament igual entonces gana la maquina
-                print(f'\n{green}Has perdido! la maquina ha adivinado el código en {intentos} intentos.{reset}')
+                print(f'\n{red}Has perdido! la maquina ha adivinado el código en {intentos} intentos.{reset}')
                 print(f'La combinación de colores era {codigo_de_juego}')
                 self.tablero.mostrar_tablero()
                 return True
@@ -120,39 +132,47 @@ def main():
         def comando_lista(self):
             return self.__comando_lista
 
-        def adivinar(self, codigo_de_juego, intentos, restante_intentos, tablero): #recibe los parametros enviados desde la class GAME
+        def adivinar(self, codigo_de_juego, intentos, restante_intentos, tablero):
             print(f'\nAdivina el código \nOpciones {self.__lista_colores}\n')
             codigo_adivinar = input('Ingresa 4 colores separados por comas (ejemplo: red,blue,green,yellow): ').lower()
 
-            if codigo_adivinar == '/list': # list para ver el historial de jugadas que he hecho
+            if codigo_adivinar == '/list':
                 if not self.__comando_lista:
-                    print(f'\n{red}No hay registro disponible{reset}\n')   
+                    print(f'\n{red}No hay registro disponible{reset}\n')
                 else:
                     print(f'\n{green}- {reset}Tus últimas jugadas fueron:')
-                    for i, jugadas in enumerate(self.__comando_lista, 1): #muestra las jugadas iteradas y enumerdas
-                        print(f' {green}{i} {reset}{jugadas}')    
+                    for i, jugadas in enumerate(self.__comando_lista, 1):
+                        print(f' {green}{i} {reset}{jugadas}')
                 return 'list'
             else:
                 codigo_adivinar_arreglado = [color.strip() for color in codigo_adivinar.split(',')]
-                self.__comando_lista.append(codigo_adivinar_arreglado) # al array de jugadas le hago un append de mi eleccion actual
-                tablero.actualizar_tablero(codigo_adivinar_arreglado)
-                tablero.mostrar_tablero(codigo_de_juego) #muestro el tablero
+                #validaciones
+                if len(codigo_adivinar_arreglado) != 4:
+                    print(f'{red}Debes usar 4 colores{reset}')
+                    return False
 
-                if codigo_adivinar_arreglado == codigo_de_juego: #valido si he ganado o si he perdido 
+                if not all(color in self.__lista_colores for color in codigo_adivinar_arreglado):
+                    print(f'{red}Solo puedes usar colores que esten en el juego{reset}')
+                    return False
+
+                self.__comando_lista.append(codigo_adivinar_arreglado)
+                tablero.actualizar_tablero(codigo_adivinar_arreglado)
+                tablero.mostrar_tablero(codigo_de_juego)
+
+                if codigo_adivinar_arreglado == codigo_de_juego:#validacion de gane
                     print(f'\n{green}¡Felicidades! Adivinaste el código en {intentos} intentos.{reset}')
                     print(f'La combinación de colores era {codigo_de_juego}')
                     return True
-                else:
+                else:#validacion de intentos
                     print(f'\n{red}Intento incorrecto. {restante_intentos - 1} intentos restantes.{reset}')
                     print(f'Tu último movimiento fue {green}{codigo_adivinar_arreglado}{reset}')
-                    # print(f'Bola blanca significa que no adivino\nBola Verde significa que no adivino\n')
-                
-                    
-                    if restante_intentos <= 1:
+
+                    if restante_intentos <= 1:#validacion de perdidacxc
                         print("Perdiste, el juego ha terminado!")
-                        print(codigo_de_juego)
+                        print(f'La combinación correcta era {codigo_de_juego}')
                         return True
-                    return False 
+                    return False
+
 
     class Tablero:
         def __init__(self, codigo_de_juego, jugador, computadora, filas=12, columnas=4):# recibo todos los parametrs desde la class GAME
@@ -171,16 +191,22 @@ def main():
             return [[' O '] * self.__columnas for _ in range(self.__filas)] # multiplico los 1 circulo por el numero de columnas
         # y a el numero de columnas un for de el rango de filas para crear el tablero
 
-        def mostrar_tablero(self,codigo_de_juego):
-            
-            print()
-            print("            Tablero                     Feedback")
+        def mostrar_tablero(self,codigo_de_juego=None):
+            num_jugadas = len(self.jugador.comando_lista)
+            jugadas = []
+            for i in range(self.__filas):
+                if i >= self.__filas - num_jugadas:
+                    jugada_idx = i - (self.__filas - num_jugadas)
+                    jugada = self.jugador.comando_lista[jugada_idx]
+                else:
+                    jugada = ['   '] * self.__columnas
+                jugadas.append(jugada)
+            print("         Tablero                     Feedback")
             print()
             for fila in self.__tablero:
                 time.sleep(0.1)
-                print("  ".join(fila) + "   |    " + " ".join(codigo_de_juego)) #muestro el tablero y entre cada fila le pondre una linea para que se vea bonito
+                print("  ".join(fila) + "   |   " + " ".join(jugadas[i])) 
                 print()
-                
         def actualizar_tablero(self, codigo_adivinado):# el codigo de el jugador correspondiente viene de la class GAME y de la class Computadora si es que juega la computadora
             self.__filas -= 1 # va empezar desde la ultima fila y le resta 1 para que se vea que sube a la siguiente oportunidad
             for i in range(len(codigo_adivinado)):
@@ -265,4 +291,4 @@ def main():
     iniciar_juego = Game(computadora, jugador)
     iniciar_juego.jugar()
 if __name__ == "__main__":
-    main()    
+    main()  
